@@ -84,15 +84,19 @@ export class Cell {
   }
 
   public isEmptyForPawn(target: Cell): boolean {
-    if (Math.abs(this.x - target.x) > 1) return false;
-    if (Math.abs(this.x - target.x) === 1 && target.isEmpty()) return false;
-    
+    if (this.figure?.color === Colors.BLACK && this.y - target.y <= 0) return false;
+    if (this.figure?.color === Colors.WHITE && this.y - target.y >= 0) return false;
+    if (Math.abs(this.y - target.y) === 1 && Math.abs(this.x - target.x) === 1 && !target.isEmpty() && target.figure?.color !== this.figure?.color) return true;
+    if (this.x !== target.x) return false;
+
     switch (this.figure?.color) {
       case Colors.BLACK:
+        if (!target.isEmpty()) return false;
         if (this.y - target.y === 1) return true;
         if (this.y - target.y === 2 && this.y === 6) return true;
         break;
       case Colors.WHITE:
+        if (!target.isEmpty()) return false;
         if (target.y - this.y === 1) return true;
         if (target.y - this.y === 2 && this.y === 1) return true;
         break;
